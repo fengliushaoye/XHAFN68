@@ -14,30 +14,35 @@
 =============POST================
  WCC(weakSelf);
  [XHAFNRequest postUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
- //自定义你处理数据的方法
- [weakself responseDict:responseObject];
+     //自定义你处理数据的方法
+     [weakself responseDict:responseObject];
  
  } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
  
- [weakself failWithError:responseObject];
+     [weakself failWithError:responseObject];
  
  } iditify:nil];
  
  =============GET================
  WCC(weakSelf);
  [XHAFNRequest getUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-  //自定义你处理数据的方法
- [weakself responseDict:responseObject];
+      //自定义你处理数据的方法
+     [weakself responseDict:responseObject];
  
  } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
  
- [weakself failWithError:responseObject];
+     [weakself failWithError:responseObject];
  
  } iditify:nil];
  
  */
 
 //=======下面是=======正文=======非礼勿听=======非礼勿看=======😄=======
+
+
+
+
+
 /** 防止block里循环引用*/
 #define WCC(weakSelf)    __weak typeof(self) weakself = self
 
