@@ -13,7 +13,7 @@
 /** post使用方法：
 =============POST================
  WCC(weakSelf);
- [XHAFNRequest postUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+ [XHAFNRequest postUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
      //自定义你处理数据的方法
      [weakself responseDict:responseObject];
  
@@ -25,7 +25,7 @@
  
  =============GET================
  WCC(weakSelf);
- [XHAFNRequest getUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+ [XHAFNRequest getUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
       //自定义你处理数据的方法
      [weakself responseDict:responseObject];
  
@@ -37,11 +37,12 @@
  
  */
 
+/*
 //=======下面是=======正文=======非礼勿听=======非礼勿看=======😄=======
-
-
-
-
+                                            MagicalStar
+                                            2016年06月08日13:41:54
+//==================================================================
+*/
 
 /** 防止block里循环引用*/
 #define WCC(weakSelf)    __weak typeof(self) weakself = self
