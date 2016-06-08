@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /** 定义一个通用的block*/
 typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
@@ -18,6 +19,12 @@ typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
 
 /** get请求*/
 + (void)getUrl:(NSString*)url postDict:(NSDictionary*)parameters successWithBlock:(requestBlock)success failWithBlock:(requestBlock)fail iditify:(id)iditify;
+
+/** 下载*/
++ (void)downLoadWithUrlString:(NSString *)urlString;
+
+/** 上传*/
++ (void)uploadWithUser:(NSString *)userId UrlString:(NSString *)urlString upImg:(UIImage *)upImg;
 
 
 @end

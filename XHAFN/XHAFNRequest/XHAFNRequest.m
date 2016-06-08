@@ -86,10 +86,10 @@ static AFHTTPSessionManager *manager = nil;
 
 - (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters{
     
-    AFHTTPSessionManager *manager = self.manager;
+    AFHTTPSessionManager *manager = [self manager];
     [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
-//        NSLog(@"\n downloadProgress:%@",downloadProgress);
+        NSLog(@"当前进度为:%lf", 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -130,10 +130,10 @@ static AFHTTPSessionManager *manager = nil;
 
 - (void)getUrl:(NSString*)url postDict:(NSDictionary*)parameters{
     
-    AFHTTPSessionManager *manager = self.manager;
+    AFHTTPSessionManager *manager = [self manager];
     [manager GET:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
-        NSLog(@"\n downloadProgress:%@",downloadProgress);
+        NSLog(@"当前进度为:%lf", 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -201,6 +201,87 @@ static AFHTTPSessionManager *manager = nil;
 }
 
 
+#pragma mark - 下载
+
++ (void)downLoadWithUrlString:(NSString *)urlString
+{    
+    request = [self request];
+    [request downLoadWithUrlString:urlString];
+    
+}
+
+- (void)downLoadWithUrlString:(NSString *)urlString{
+
+    // 1.创建管理者对象
+        AFHTTPSessionManager *manager = [self manager];
+    // 2.设置请求的URL地址
+    NSURL *url = [NSURL URLWithString:urlString];
+    // 3.创建请求对象
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    // 4.下载任务
+    NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        // 下载进度
+        NSLog(@"当前下载进度为:%lf", 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        // 下载地址
+        NSLog(@"默认下载地址%@",targetPath);
+        // 设置下载路径,通过沙盒获取缓存地址,最后返回NSURL对象
+        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)lastObject];
+        return [NSURL fileURLWithPath:filePath]; // 返回的是文件存放在本地沙盒的地址
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        // 下载完成调用的方法
+        NSLog(@"%@---%@", response, filePath);
+    }];
+    // 5.启动下载任务
+    [task resume];
+
+    [self deadrequest];
+}
+
+
+#pragma mark - 上传
+
++ (void)uploadWithUser:(NSString *)userId UrlString:(NSString *)urlString upImg:(UIImage *)upImg
+{
+    request = [self request];
+    [request uploadWithUser:userId UrlString:urlString upImg:upImg];
+    
+}
+
+- (void)uploadWithUser:(NSString *)userId UrlString:(NSString *)urlString upImg:(UIImage *)upImg{
+ 
+    // 创建管理者对象
+    AFHTTPSessionManager *manager = [self manager];
+    // 参数
+    NSDictionary *param = @{@"user_id":userId};
+    [manager POST:urlString parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        /******** 1.上传已经获取到的img *******/
+        // 把图片转换成data
+        NSData *data = UIImagePNGRepresentation(upImg);
+        NSString *fileName = @"123.png";
+        NSString *mimeType = @"image/png";
+        // 拼接数据到请求体中
+        [formData appendPartWithFileData:data name:@"file" fileName:fileName mimeType:mimeType];
+       
+        /******** 2.通过路径上传沙盒或系统相册里的图片 *****/
+        //        [formData appendPartWithFileURL:[NSURL fileURLWithPath:@"文件地址"] name:@"file" fileName:@"1234.png" mimeType:@"application/octet-stream" error:nil];
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        // 打印上传进度
+        NSLog(@"当前上传进度:%lf",1.0 *uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //请求成功
+        NSLog(@"上传成功：%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //请求失败
+        NSLog(@"上传失败：%@",error);
+    }];
+    
+    [self deadrequest];
+    
+}
 
 #pragma mark - 干掉 超神
 /** 用完了 干掉*/

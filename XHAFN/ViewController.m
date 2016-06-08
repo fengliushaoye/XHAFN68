@@ -21,11 +21,7 @@
     
 
     
-//    [XHAFNRequest getUrl:@"http://www.baidu.com" postDict:nil successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
-//        
-//    } failWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
-//        
-//    } iditify:nil];
+
     
     
     
@@ -33,6 +29,31 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
+    [self download];
+    
+}
+
+
+- (void)download{
+    
+    [XHAFNRequest downLoadWithUrlString:@"http://photo.enterdesk.com/2011-2-16/enterdesk.com-1AA0C93EFFA51E6D7EFE1AE7B671951F.jpg"];
+    
+}
+
+
+
+- (void)get{
+    
+    [XHAFNRequest getUrl:@"http://119.57.73.148:9000/api/com/user/query" postDict:nil successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } failWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } iditify:nil];
+    
+}
+
+- (void)post{
+    
     NSString *urlstr = @"http://119.57.73.148:9000/api/com/user/query";
     
     NSDictionary *_registArr= [[NSMutableDictionary alloc] init];
@@ -50,7 +71,7 @@
         NSLog(@"successWithBlock");
     } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
         NSLog(@"failWithBlock");
-
+        
     } iditify:nil];
     
 }
