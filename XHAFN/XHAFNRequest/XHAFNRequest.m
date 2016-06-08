@@ -93,24 +93,25 @@ static AFHTTPSessionManager *manager = nil;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"\n responseObject:%@",responseObject);
+//        NSLog(@"\n responseObject:%@",responseObject);
         if (self.successBlock) {
             self.successBlock(task,responseObject);
         }
         [task cancel];
-      
+        [self deadrequest];
+
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        NSLog(@"\n error:%@",[error localizedDescription]);
+//        NSLog(@"\n error:%@",[error localizedDescription]);
         if (self.failureBlock) {
             self.failureBlock(task,error);
         }
         [task cancel];
-        
+        [self deadrequest];
+
     }];
 
-    [self deadrequest];
 
 
 }
@@ -142,6 +143,7 @@ static AFHTTPSessionManager *manager = nil;
             self.successBlock(task,responseObject);
         }
         [task cancel];
+        [self deadrequest];
 
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -151,10 +153,10 @@ static AFHTTPSessionManager *manager = nil;
             self.failureBlock(task,error);
         }
         [task cancel];
-        
+        [self deadrequest];
+
     }];
     
-    [self deadrequest];
     
 }
 
@@ -286,12 +288,14 @@ static AFHTTPSessionManager *manager = nil;
 #pragma mark - 干掉 超神
 /** 用完了 干掉*/
 - (void)deadrequest{
-    NSLog(@"1%p",request);
-    NSLog(@"2%p",manager);
+//    NSLog(@"1%p",request);
+//    NSLog(@"2%p",manager);
     request = nil;
     manager = nil;
-    NSLog(@"4%p",request);
-    NSLog(@"4%p",manager);
+//    NSLog(@"4%p",request);
+//    NSLog(@"4%p",manager);
+
+    NSLog(@"deadrequest");
 
 }
 

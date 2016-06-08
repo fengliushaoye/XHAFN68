@@ -29,7 +29,7 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
-    [self download];
+    [self post];
     
 }
 
@@ -58,21 +58,31 @@
     
     NSDictionary *_registArr= [[NSMutableDictionary alloc] init];
     [_registArr setValue:@"companyRegister" forKey:@"type"];
-    [_registArr setValue:@"sfsd" forKey:@"company_name"];
-    [_registArr setValue:@"rer" forKey:@"company_province"];
-    [_registArr setValue:@"ewe" forKey:@"company_city"];
-    [_registArr setValue:@"sdfd" forKey:@"linkman_name"];
-    [_registArr setValue:@"sdfs" forKey:@"link_phone"];
-    [_registArr setValue:@"sdfd" forKey:@"mobile"];
-    [_registArr setValue:@"sdf" forKey:@"linkman_sex"];
-    [_registArr setValue:@"sdfsd" forKey:@"password"];
-    
-    [XHAFNRequest postUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"successWithBlock");
+
+
+    WCC(weakSelf);
+    [XHAFNRequest postUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+        
+        [weakself responseDict:responseObject];
+        
     } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
-        NSLog(@"failWithBlock");
+
+        [weakself failWithError:responseObject];
         
     } iditify:nil];
+    
+}
+
+
+- (void)responseDict:(NSDictionary*)dict{
+    
+    NSLog(@"responseDict:%@",dict);
+    
+}
+
+
+- (void)failWithError:(NSError*)error{
+    
     
 }
 

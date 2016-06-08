@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+/** 防止block里循环引用*/
+#define WCC(weakSelf)    __weak typeof(self) weakself = self
+
 /** 定义一个通用的block*/
 typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
 
