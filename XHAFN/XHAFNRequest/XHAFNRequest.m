@@ -10,7 +10,7 @@
 #import "AFNetworking.h"
 
 
-/** 设置超时时间*/
+/** 设置超时时间 30秒*/
 #define kTimeOutInterval 30
 
 @interface XHAFNRequest ()

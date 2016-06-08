@@ -21,8 +21,6 @@
     
 
     
-
-    
     
     
 }
@@ -54,38 +52,44 @@
 
 - (void)post{
     
-    NSString *urlstr = @"http://119.57.73.148:9000/api/com/user/query";
+    NSString *urlstr = @"https://usc.esgcc.com.cn/user/regedit";
+    NSDictionary *param= [[NSMutableDictionary alloc] init];
+    [param setValue:@"companyRegister" forKey:@"type"];
     
-    NSDictionary *_registArr= [[NSMutableDictionary alloc] init];
-    [_registArr setValue:@"companyRegister" forKey:@"type"];
-
-
+    /** 发送HTTP数据请求*/
     WCC(weakSelf);
-    [XHAFNRequest postUrl:urlstr postDict:_registArr successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+    [XHAFNRequest postUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
         
         [weakself responseDict:responseObject];
         
     } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
-
+        
         [weakself failWithError:responseObject];
         
     } iditify:nil];
     
-
+    
 }
 
-
+/** 成功之后返回的数据*/
 - (void)responseDict:(NSDictionary*)dict{
     
     NSLog(@"responseDict:%@",dict);
     
 }
 
-
+/** 失败返回的数据*/
 - (void)failWithError:(NSError*)error{
     
+    NSLog(@"responseDict:%@",[error localizedDescription]);
+    
+
+
     
 }
+
+    
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
