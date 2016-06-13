@@ -59,9 +59,9 @@ static AFHTTPSessionManager *manager = nil;
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         
         /** 返回到的是json数据*/
-//        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
         /** 返回的普通数据*/
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         
         
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;

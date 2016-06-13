@@ -131,7 +131,10 @@
         NSString *res = [NSString stringWithFormat:@"%@",dict];
         [XHAFNRequest alert:res];
         NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
-        alertmsg([XHAFNRequest getbackCode:msg]);
+        msg = [XHAFNRequest getbackCode:msg];
+        
+        alertmsg(msg);
+        
     }else{
     
             NSData *data  = (NSData*)dict;
