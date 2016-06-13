@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Qwp-wT-BK9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tNo-Eb-6XA">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -22,7 +22,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m2Y-mb-yuQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1674" y="94"/>
+            <point key="canvasLocation" x="1550" y="103"/>
         </scene>
         <!--1-->
         <scene sceneID="tne-QT-ifu">
@@ -36,7 +36,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xgv-2s-Rgk">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入用户名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xgv-2s-Rgk">
                                 <rect key="frame" x="0.0" y="64" width="320" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="8ud-x8-aKC"/>
@@ -44,7 +44,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jRy-8c-0pV">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jRy-8c-0pV">
                                 <rect key="frame" x="0.0" y="102" width="320" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="LkC-LN-loB"/>
@@ -75,7 +75,13 @@
                             <constraint firstAttribute="trailing" secondItem="FAx-cM-tcZ" secondAttribute="trailing" id="zdT-Xr-4Lq"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="1" id="c3u-b9-tWI"/>
+                    <navigationItem key="navigationItem" title="1" id="c3u-b9-tWI">
+                        <barButtonItem key="rightBarButtonItem" title="next" id="I49-zh-XO5">
+                            <connections>
+                                <segue destination="7K2-i5-MoZ" kind="push" id="ndC-7i-7Md"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mainTab" destination="FAx-cM-tcZ" id="pkM-pU-NBP"/>
                         <outlet property="name" destination="xgv-2s-Rgk" id="NNN-VP-VA6"/>

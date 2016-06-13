@@ -167,5 +167,19 @@
 /** 系统弹出框*/
 + (void)alert:(NSString*)msg;
 
+/**
+ *  @author XingHang
+ *
+ *  @brief 是否显示转圈圈
+ *
+ *  @param aview 要显示的view
+ *  @param flag  yes 添加 no 移除
+ */
++ (void)actView:(UIView*)aview show:(BOOL)flag;
+
+/** 视图销毁的时候调用下哦*/
++(void)deadrequest;
+
+
 
 @end

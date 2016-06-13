@@ -9,6 +9,7 @@
 #import "XHAFNRequest.h"
 #import "AFNetworking.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "DejalActivityView.h"
 
 
 /** 设置超时时间 30秒*/
@@ -32,6 +33,8 @@
 static XHAFNRequest *request = nil;
 /** 请求体*/
 static AFHTTPSessionManager *manager = nil;
+/** 遮招层*/
+static UIView *alplaView = nil;
 
 
 #pragma mark - 初始化
@@ -59,15 +62,16 @@ static AFHTTPSessionManager *manager = nil;
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         
         /** 返回到的是json数据*/
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//        manager.responseSerializer = [AFJSONResponseSerializer serializer];
         /** 返回的普通数据*/
-//        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         
         
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;
         
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", @"text/plain",nil];
-        
+     
+
    
     }
     
@@ -75,6 +79,19 @@ static AFHTTPSessionManager *manager = nil;
     
 }
 
+
+/** 背景视图初始化*/
+-(UIView*)alplaView{
+
+    if (!alplaView) {
+        
+        CGSize viewsize = [UIScreen mainScreen].bounds.size;
+        alplaView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, viewsize.width, viewsize.height-64)];
+        alplaView.backgroundColor = [UIColor grayColor];
+        [[UIApplication sharedApplication].keyWindow addSubview:alplaView];
+    }
+    return alplaView;
+}
 
 
 #pragma mark - POST
@@ -95,6 +112,9 @@ static AFHTTPSessionManager *manager = nil;
 - (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters{
     
     NSLog(@"入参：\n%@",parameters);
+    [self alplaView];
+
+    [self addSubviewOfBgview:YES];
     
     AFHTTPSessionManager *manager = [self manager];
     // 加上这行代码，https ssl 验证。
@@ -124,9 +144,21 @@ static AFHTTPSessionManager *manager = nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
 //        NSLog(@"\n 请求返回的数据:%@",responseObject);
-        if (self.successBlock) {
-            self.successBlock(task,responseObject);
+        NSError *error;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:&error];
+        if (error) {
+
+            NSString *msg = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+            alertmsg(msg);
+            
+        }else{
+            
+            if (self.successBlock) {
+                self.successBlock(task,json);
+            }
+
         }
+        
         [task cancel];
         [self deadrequest];
 
@@ -136,9 +168,11 @@ static AFHTTPSessionManager *manager = nil;
 //        if([error code] == NSURLErrorCancelled) {
 //            return;
 //        }
-        NSLog(@"\n error:%@",error);
+        NSLog(@"\n code:%ld,error:%@",error.code,error);
+        
 //        NSURLErrorCancelled -999
-
+        NSString *errormsg = [self failCode:error];
+        alertmsg(errormsg);
         if (self.failureBlock) {
             self.failureBlock(task,error);
         }
@@ -326,15 +360,21 @@ static AFHTTPSessionManager *manager = nil;
    
 //    NSLog(@"1%p",request);
 //    NSLog(@"2%p",manager);
-    
+    [self addSubviewOfBgview:NO];
+    alplaView = nil;
     manager = nil;
     request = nil;
-    
+
 //    NSLog(@"4%p",request);
 //    NSLog(@"4%p",manager);
 
 //    NSLog(@"deadrequest");
 
+}
+
++(void)deadrequest{
+
+    [request deadrequest];
 }
 
 -(void)dealloc{
@@ -496,6 +536,23 @@ static AFHTTPSessionManager *manager = nil;
     
 }
 
+/** 请求失败给出错误信息提示*/
+- (NSString*)failCode:(NSError*)error{
+
+    NSString *msg = @"";
+    NSInteger code = error.code;
+    switch (code) {
+        case NSURLErrorTimedOut:
+            msg = @"请求超时";
+            break;
+            
+        default:
+            msg = error.localizedDescription;
+            break;
+    }
+    return msg;
+}
+
 
 /** 系统弹出框*/
 + (void)alert:(NSString*)msg{
@@ -507,5 +564,38 @@ static AFHTTPSessionManager *manager = nil;
                                               otherButtonTitles:@"确定", nil];
     [alertView show];
 }
+
+
+
+#pragma mark - 转圈圈
+
++ (void)actView:(UIView*)aview show:(BOOL)flag{
+    
+    if (flag) {
+        [DejalBezelActivityView activityViewForView:aview];
+        
+    }else{
+        [DejalBezelActivityView removeViewAnimated:YES];
+        
+    }
+}
+
+/** 是否显示转圈圈*/
+- (void)addSubviewOfBgview:(BOOL)flag{
+
+//    NSLog(@"%p",alplaView);
+    
+    if (flag) {
+        alplaView.hidden = NO;
+        [DejalBezelActivityView activityViewForView:alplaView];
+    }else{
+        alplaView.hidden = YES;
+        [DejalBezelActivityView removeViewAnimated:YES];
+        //        [DejalBezelActivityView removeView];
+        
+    }
+    
+}
+
 
 @end

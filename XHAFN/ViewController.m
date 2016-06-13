@@ -126,23 +126,16 @@
 - (void)responseDict:(NSDictionary*)dict{
     NSLog(@"\n成功之后返回的数据:%@",dict);
     //服务接入
-    if ([dict isKindOfClass:[NSDictionary class]]) {
-        
-        NSString *res = [NSString stringWithFormat:@"%@",dict];
-        [XHAFNRequest alert:res];
-        NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
+    NSString *res = [NSString stringWithFormat:@"%@",dict];
+    [XHAFNRequest alert:res];
+    NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
+    if ([msg integerValue] != 1) {
         msg = [XHAFNRequest getbackCode:msg];
         
         alertmsg(msg);
-        
-    }else{
-    
-            NSData *data  = (NSData*)dict;
-            NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"msg:%@",msg);
-            alertmsg(msg);
     }
-
+  
+    
     
 }
 
@@ -241,11 +234,12 @@
     
     NSLog(@"didSelectRowAtIndexPath");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSLog(@"%@",[NSThread currentThread]);
     
     if (indexPath.row == 0) {
         //服务接入
             [self post:_name.text pwd:_pwd.text];
-    }else if (indexPath.row == 0) {
+    }else if (indexPath.row == 1) {
         //服务接入
         [self registerRquest];
         

@@ -38,6 +38,9 @@
 		22A64AC41D0E421D003911CB /* uscesgcccomcn.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC11D0E421D003911CB /* uscesgcccomcn.cer */; };
 		22A64AC51D0E421D003911CB /* uscesgmallcom.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC21D0E421D003911CB /* uscesgmallcom.cer */; };
 		22A64AC61D0E421D003911CB /* uscesgmalltcom.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC31D0E421D003911CB /* uscesgmalltcom.cer */; };
+		22A7EED91D0E833C006EA414 /* Activityim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22A7EED51D0E833C006EA414 /* Activityim@2x.png */; };
+		22A7EEDA1D0E833C006EA414 /* loading_im@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22A7EED61D0E833C006EA414 /* loading_im@2x.png */; };
+		22A7EEDB1D0E833C006EA414 /* DejalActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A7EED81D0E833C006EA414 /* DejalActivityView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +101,10 @@
 		22A64AC11D0E421D003911CB /* uscesgcccomcn.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uscesgcccomcn.cer; sourceTree = "<group>"; };
 		22A64AC21D0E421D003911CB /* uscesgmallcom.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uscesgmallcom.cer; sourceTree = "<group>"; };
 		22A64AC31D0E421D003911CB /* uscesgmalltcom.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = uscesgmalltcom.cer; sourceTree = "<group>"; };
+		22A7EED51D0E833C006EA414 /* Activityim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Activityim@2x.png"; sourceTree = "<group>"; };
+		22A7EED61D0E833C006EA414 /* loading_im@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading_im@2x.png"; sourceTree = "<group>"; };
+		22A7EED71D0E833C006EA414 /* DejalActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DejalActivityView.h; sourceTree = "<group>"; };
+		22A7EED81D0E833C006EA414 /* DejalActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DejalActivityView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +137,7 @@
 		22038DC71D07A2D400F13404 /* XHAFN */ = {
 			isa = PBXGroup;
 			children = (
+				22A7EED31D0E833C006EA414 /* DejalActivityView */,
 				22038E1A1D07AD4D00F13404 /* XHAFNRequest */,
 				22038DCB1D07A2D400F13404 /* AppDelegate.h */,
 				22038DCC1D07A2D400F13404 /* AppDelegate.m */,
@@ -230,6 +238,25 @@
 			path = "UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
+		22A7EED31D0E833C006EA414 /* DejalActivityView */ = {
+			isa = PBXGroup;
+			children = (
+				22A7EED41D0E833C006EA414 /* DejalActivityImage */,
+				22A7EED71D0E833C006EA414 /* DejalActivityView.h */,
+				22A7EED81D0E833C006EA414 /* DejalActivityView.m */,
+			);
+			path = DejalActivityView;
+			sourceTree = "<group>";
+		};
+		22A7EED41D0E833C006EA414 /* DejalActivityImage */ = {
+			isa = PBXGroup;
+			children = (
+				22A7EED51D0E833C006EA414 /* Activityim@2x.png */,
+				22A7EED61D0E833C006EA414 /* loading_im@2x.png */,
+			);
+			path = DejalActivityImage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -297,8 +324,10 @@
 				22038DD51D07A2D400F13404 /* Assets.xcassets in Resources */,
 				226F31701D0D506F0054211B /* xh.cer in Resources */,
 				226F31721D0D519A0054211B /* mfp.cer in Resources */,
+				22A7EED91D0E833C006EA414 /* Activityim@2x.png in Resources */,
 				226F31791D0D62E10054211B /* weiboapi.cer in Resources */,
 				22A64AC41D0E421D003911CB /* uscesgcccomcn.cer in Resources */,
+				22A7EEDA1D0E833C006EA414 /* loading_im@2x.png in Resources */,
 				226F31771D0D61AA0054211B /* weibo.cer in Resources */,
 				226F31751D0D5BA60054211B /* xhsgcc.cer in Resources */,
 				22A64AC51D0E421D003911CB /* uscesgmallcom.cer in Resources */,
@@ -319,6 +348,7 @@
 				22038E4C1D07AD4D00F13404 /* UIImageView+AFNetworking.m in Sources */,
 				22038DD01D07A2D400F13404 /* ViewController.m in Sources */,
 				22038E531D07B7B200F13404 /* fViewController.m in Sources */,
+				22A7EEDB1D0E833C006EA414 /* DejalActivityView.m in Sources */,
 				22038E4B1D07AD4D00F13404 /* UIButton+AFNetworking.m in Sources */,
 				22038DCD1D07A2D400F13404 /* AppDelegate.m in Sources */,
 				22038E421D07AD4D00F13404 /* AFNetworkReachabilityManager.m in Sources */,
