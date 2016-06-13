@@ -12,7 +12,10 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *name;
 @property (weak, nonatomic) IBOutlet UITextField *pwd;
-- (IBAction)login:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UITableView *mainTab;
+/** 数据源*/
+@property (nonatomic,strong) NSMutableArray *dataArr;
 
 @end
 
@@ -22,8 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-
-    
+    self.mainTab.tableFooterView = [[UIView alloc] init];
     
     
 }
@@ -36,7 +38,7 @@
 //    [self post:_name.text pwd:_pwd.text];
     
 //    注册
-    [self registerRquest];
+//    [self registerRquest];
     
 
 //    [self get];
@@ -206,6 +208,59 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)login:(id)sender {
+
+#pragma mark- UITableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.dataArr.count;
+};
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString *identifier = @"identifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (cell == nil) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+    }
+    
+    cell.textLabel.text = self.dataArr[indexPath.row];
+    
+    return cell;
+    
+    
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"didSelectRowAtIndexPath");
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 0) {
+        //服务接入
+            [self post:_name.text pwd:_pwd.text];
+    }else{
+    
+        //其他请求
+        
+    }
+    
+}
+
+/** 本页数据源 懒加载*/
+- (NSMutableArray *)dataArr{
+    
+    if (!_dataArr) {
+        
+        _dataArr = [[NSMutableArray alloc] initWithObjects:@"服务接入",@"注册", nil];
+        
+        
+    }
+    return _dataArr;
+    
+}
+
 @end
