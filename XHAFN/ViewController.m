@@ -242,10 +242,12 @@
     if (indexPath.row == 0) {
         //服务接入
             [self post:_name.text pwd:_pwd.text];
+    }else if (indexPath.row == 0) {
+        //服务接入
+        [self registerRquest];
+        
     }else{
     
-        //其他请求
-        
     }
     
 }
@@ -255,7 +257,7 @@
     
     if (!_dataArr) {
         
-        _dataArr = [[NSMutableArray alloc] initWithObjects:@"服务接入",@"注册", nil];
+        _dataArr = [[NSMutableArray alloc] initWithObjects:@"服务接入",@"登录名效验", nil];
         
         
     }
