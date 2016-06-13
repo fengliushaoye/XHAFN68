@@ -8,10 +8,22 @@
 
 #import "XHAFNRequest.h"
 #import "AFNetworking.h"
+#import <CommonCrypto/CommonDigest.h>
 
 
 /** 设置超时时间 30秒*/
 #define kTimeOutInterval 30
+/**
+ *  是否开启https SSL 验证
+ *
+ *  @return YES为开启，NO为关闭
+ */
+#define openHttpsSSL YES
+/**
+ *  SSL 证书名称，仅支持cer格式。“app.bishe.com.cer”,则填“app.bishe.com”
+ */
+#define certificate @"xhsgcc" //weiboapi sgcc
+
 
 @interface XHAFNRequest ()
 
@@ -50,20 +62,28 @@ static AFHTTPSessionManager *manager = nil;
     if (!manager) {
         
         manager = [AFHTTPSessionManager manager];
+        // 加上这行代码，https ssl 验证。
+        if(openHttpsSSL)
+        {
+            [manager setSecurityPolicy:[self customSecurityPolicy]];
+        }
+        
         //    上传json格式
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         /** 上传普通格式*/
-        //    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         
         /** 获取到的是json数据*/
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         /** 获取的的普通数据*/
-        //        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         
         
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;
         
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        
+   
     }
     
     return manager;
@@ -71,20 +91,39 @@ static AFHTTPSessionManager *manager = nil;
 }
 
 
+
 #pragma mark - POST
 
 + (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters successWithBlock:(requestBlock)success failWithBlock:(requestBlock)fail iditify:(id)iditify{
     
     request = [self request];
-    [request postUrl:url postDict:parameters];
+
+    NSString *requestUrl = @"";
+    
+    if ([url isEqualToString:URL_ServiceIn]) {
+//服务接入
+        requestUrl = url;
+
+    }else{
+
+        requestUrl = [NSString stringWithFormat:@"%@%@",URL_BASE,url];
+
+
+    }
+    
+    NSLog(@"\n请求的url：\n%@",requestUrl);
+    
+    [request postUrl:requestUrl postDict:parameters];
     request.successBlock = success;
     request.failureBlock = fail;
-
+    
 
     
 }
 
 - (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters{
+    
+    NSLog(@"入参：\n%@",parameters);
     
     AFHTTPSessionManager *manager = [self manager];
     [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -93,7 +132,7 @@ static AFHTTPSessionManager *manager = nil;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-//        NSLog(@"\n responseObject:%@",responseObject);
+//        NSLog(@"\n 请求返回的数据:%@",responseObject);
         if (self.successBlock) {
             self.successBlock(task,responseObject);
         }
@@ -103,7 +142,12 @@ static AFHTTPSessionManager *manager = nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-//        NSLog(@"\n error:%@",[error localizedDescription]);
+//        if([error code] == NSURLErrorCancelled) {
+//            return;
+//        }
+        NSLog(@"\n error:%@",error);
+//        NSURLErrorCancelled -999
+
         if (self.failureBlock) {
             self.failureBlock(task,error);
         }
@@ -288,10 +332,13 @@ static AFHTTPSessionManager *manager = nil;
 #pragma mark - 干掉 超神
 /** 用完了 干掉*/
 - (void)deadrequest{
+   
 //    NSLog(@"1%p",request);
 //    NSLog(@"2%p",manager);
-    request = nil;
+    
     manager = nil;
+    request = nil;
+    
 //    NSLog(@"4%p",request);
 //    NSLog(@"4%p",manager);
 
@@ -305,5 +352,169 @@ static AFHTTPSessionManager *manager = nil;
     
 }
 
+#pragma mark - 其他常用方法
+
+#pragma mark - 时间格式化
+
+/** 获取当前时间并格式化为 "2016-06-11 11:51:55"*/
++ (NSString*)timeFormatter{
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone localTimeZone];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSString *nowdateStr = [formatter stringFromDate:date];
+    
+//    NSLog(@"当前的时间戳：%f",[date timeIntervalSince1970]);
+    
+    return nowdateStr;
+    
+}
+
+#pragma mark - 时间戳转时间
+
+/** 时间戳转时间 1381480688189 to "2016-06-11 11:51:55"*/
++ (NSString*)timestampToCustom:(NSString *)timestamp{
+
+    NSString *substr = @"";
+
+    if (timestamp.length >10) {
+        
+        substr = [timestamp substringToIndex:10];
+        
+    }else{
+        
+        substr = timestamp;
+    }
+    
+    NSTimeInterval timeinterval = [substr doubleValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeinterval];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone localTimeZone];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSString *nowdateStr = [formatter stringFromDate:date];
+    
+    return nowdateStr;
+
+}
+
+
+#pragma mark - UUID
+/** 获取UUIDString*/
++ (NSString*)uuidStr{
+    
+   return  [UIDevice currentDevice].identifierForVendor.UUIDString;
+    
+}
+
+
+
+#pragma mark - 对字符串去空格
+
++ (NSString*)noEmptyStr:(NSString*)str{
+    
+//    NSLog(@"\n认证签名去空格前\n%@",str);
+    
+    NSString *endstr =  [str stringByReplacingOccurrencesOfString:@" " withString:@""];
+   
+//    NSLog(@"\n认证签名去空格后加密前\n%@",endstr);
+    //大写
+    endstr = [self md5Create:endstr];
+
+//    NSLog(@"\n认证签名去空格后加密后\n%@",endstr);
+
+    return endstr;
+
+}
+
+#pragma mark -- MD5加密
++(NSString *)md5Create:(NSString *)signString{
+    
+    const char*cStr =[signString UTF8String];
+    unsigned char result[16];
+    CC_MD5(cStr, strlen(cStr), result);
+    return [NSString stringWithFormat:
+            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ].uppercaseString;
+    
+    //大写uppercaseString 小写lowercaseString
+}
+
+- (AFSecurityPolicy*)customSecurityPolicy
+{
+    /*
+    // /先导入证书
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:certificate ofType:@"cer"];//证书的路径
+    NSData *certData = [NSData dataWithContentsOfFile:cerPath];
+    // AFSSLPinningModeCertificate 使用证书验证模式
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
+    securityPolicy.allowInvalidCertificates = YES;
+    securityPolicy.validatesDomainName = NO;
+    securityPolicy.pinnedCertificates =  [NSSet setWithArray:@[certData]];
+    */
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:certificate ofType:@"cer"];
+    NSData * certData =[NSData dataWithContentsOfFile:cerPath];
+    NSSet * certSet   = [[NSSet alloc] initWithObjects:certData, nil];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    // 是否允许,NO-- 不允许无效的证书
+    [securityPolicy setAllowInvalidCertificates:YES];
+    // 设置证书
+    [securityPolicy setPinnedCertificates:certSet];
+    
+    return securityPolicy;
+}
+
+
+
+#pragma mark - 处理异常
+
++ (NSString*)getbackCode:(NSString*)str{
+    
+     /**  1. 成功。 2. 认证签名异常。 3. 账户认证失败（用户或密码不正确）。 4. 账户认证失败（账户已失效或锁定）。 5. 服务器异常。*/
+    int index = [str intValue];
+    NSString *msg = @"";
+    switch (index) {
+        case 1:
+            msg = @"成功";
+            break;
+        case 2:
+            msg = @"认证签名异常";
+            break;
+        case 3:
+            msg = @"账户认证失败（用户或密码不正确";
+            break;
+        case 4:
+            msg = @"账户认证失败（账户已失效或锁定";
+            break;
+        case 5:
+            msg = @"服务器异常";
+            break;
+        default:
+            msg = @"发生未知错误";
+            break;
+    }
+    return msg;
+   
+    
+}
+
+
+/** 系统弹出框*/
++ (void)alert:(NSString*)msg{
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:msg
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
 
 @end

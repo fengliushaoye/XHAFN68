@@ -30,6 +30,11 @@
 		22038E4F1D07AD4D00F13404 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 22038E3E1D07AD4D00F13404 /* UIWebView+AFNetworking.m */; };
 		22038E501D07AD4D00F13404 /* XHAFNRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 22038E401D07AD4D00F13404 /* XHAFNRequest.m */; };
 		22038E531D07B7B200F13404 /* fViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22038E521D07B7B200F13404 /* fViewController.m */; };
+		226F31701D0D506F0054211B /* xh.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F316F1D0D506F0054211B /* xh.cer */; };
+		226F31721D0D519A0054211B /* mfp.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31711D0D519A0054211B /* mfp.cer */; };
+		226F31751D0D5BA60054211B /* xhsgcc.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31741D0D5BA60054211B /* xhsgcc.cer */; };
+		226F31771D0D61AA0054211B /* weibo.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31761D0D61AA0054211B /* weibo.cer */; };
+		226F31791D0D62E10054211B /* weiboapi.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31781D0D62E10054211B /* weiboapi.cer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +85,13 @@
 		22038E401D07AD4D00F13404 /* XHAFNRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHAFNRequest.m; sourceTree = "<group>"; };
 		22038E511D07B7B200F13404 /* fViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fViewController.h; sourceTree = "<group>"; };
 		22038E521D07B7B200F13404 /* fViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fViewController.m; sourceTree = "<group>"; };
+		22038E541D07F00800F13404 /* XHURLHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHURLHeader.h; sourceTree = "<group>"; };
+		226F316F1D0D506F0054211B /* xh.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = xh.cer; sourceTree = "<group>"; };
+		226F31711D0D519A0054211B /* mfp.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = mfp.cer; sourceTree = "<group>"; };
+		226F31731D0D56C50054211B /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		226F31741D0D5BA60054211B /* xhsgcc.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = xhsgcc.cer; sourceTree = "<group>"; };
+		226F31761D0D61AA0054211B /* weibo.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = weibo.cer; sourceTree = "<group>"; };
+		226F31781D0D62E10054211B /* weiboapi.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = weiboapi.cer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				22038DC91D07A2D400F13404 /* main.m */,
+				226F31731D0D56C50054211B /* PrefixHeader.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -139,9 +152,15 @@
 		22038E1A1D07AD4D00F13404 /* XHAFNRequest */ = {
 			isa = PBXGroup;
 			children = (
+				226F31781D0D62E10054211B /* weiboapi.cer */,
+				226F31761D0D61AA0054211B /* weibo.cer */,
+				226F31741D0D5BA60054211B /* xhsgcc.cer */,
+				226F31711D0D519A0054211B /* mfp.cer */,
+				226F316F1D0D506F0054211B /* xh.cer */,
 				22038E1B1D07AD4D00F13404 /* AFNetworking */,
 				22038E3F1D07AD4D00F13404 /* XHAFNRequest.h */,
 				22038E401D07AD4D00F13404 /* XHAFNRequest.m */,
+				22038E541D07F00800F13404 /* XHURLHeader.h */,
 			);
 			path = XHAFNRequest;
 			sourceTree = "<group>";
@@ -233,6 +252,11 @@
 				TargetAttributes = {
 					22038DC41D07A2D400F13404 = {
 						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -261,6 +285,11 @@
 			files = (
 				22038DD81D07A2D400F13404 /* LaunchScreen.storyboard in Resources */,
 				22038DD51D07A2D400F13404 /* Assets.xcassets in Resources */,
+				226F31701D0D506F0054211B /* xh.cer in Resources */,
+				226F31721D0D519A0054211B /* mfp.cer in Resources */,
+				226F31791D0D62E10054211B /* weiboapi.cer in Resources */,
+				226F31771D0D61AA0054211B /* weibo.cer in Resources */,
+				226F31751D0D5BA60054211B /* xhsgcc.cer in Resources */,
 				22038DD31D07A2D400F13404 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +432,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
+				GCC_PREFIX_HEADER = "/Users/XingHang/Desktop/综合练习/Object-c语言/XHAFN/XHAFN/PrefixHeader.pch";
 				INFOPLIST_FILE = XHAFN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -415,6 +446,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
+				GCC_PREFIX_HEADER = "/Users/XingHang/Desktop/综合练习/Object-c语言/XHAFN/XHAFN/PrefixHeader.pch";
 				INFOPLIST_FILE = XHAFN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

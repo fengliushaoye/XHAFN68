@@ -10,6 +10,9 @@
 #import "XHAFNRequest.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *name;
+@property (weak, nonatomic) IBOutlet UITextField *pwd;
+- (IBAction)login:(id)sender;
 
 @end
 
@@ -27,10 +30,29 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
-    [self post];
+    
+    [self post:_name.text pwd:_pwd.text];
+
+//    [self get];
+    
+//    NSLog(@"%@",[XHAFNRequest timestampToCustom:@"1381480688189"]);
+//    NSLog(@"%@",[XHAFNRequest timeFormatter]);
+//    NSLog(@"%@",[XHAFNRequest uuidStr]);
+
+
+    
     
 }
 
+
+- (void)cutimg{
+    
+    UIImage *image ;
+    //1
+    [image stretchableImageWithLeftCapWidth:image.size.width*0.5 topCapHeight:image.size.height*0.5];
+    //2
+    [image resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+}
 
 - (void)download{
     
@@ -42,7 +64,7 @@
 
 - (void)get{
     
-    [XHAFNRequest getUrl:@"http://119.57.73.148:9000/api/com/user/query" postDict:nil successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
+    [XHAFNRequest getUrl:URL_ServiceIn postDict:nil successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
         
     } failWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
         
@@ -50,42 +72,58 @@
     
 }
 
-- (void)post{
-    
-    NSString *urlstr = @"https://usc.esgcc.com.cn/user/regedit";
-    NSDictionary *param= [[NSMutableDictionary alloc] init];
-    [param setValue:@"companyRegister" forKey:@"type"];
-    
-    /** 发送HTTP数据请求*/
-    WCC(weakSelf);
-    [XHAFNRequest postUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+- (void)post:(NSString*)name pwd:(NSString*)pwd{
+
+    //服务接入
+    NSString *password    = pwd;
+    NSString *deviceid    = [XHAFNRequest uuidStr];
+    NSString *requestTime = [XHAFNRequest timeFormatter];
+    NSString *username    = name;
+    NSString *secretKey   = RAP_userSecretKey;
+    NSString *authSign    = [NSString stringWithFormat:@"%@%@%@%@",secretKey,username,[XHAFNRequest md5Create:password],requestTime];/** secretKey+username+password+requestTime*/
+
+    authSign = [XHAFNRequest noEmptyStr:authSign];
+
+    NSDictionary *param= @{
+                           @"password":password,
+                           @"deviceid":deviceid,
+                           @"requestTime":requestTime,
+                           @"username":username,
+                           @"authSign":authSign,
+                           };
+
+    if (ISOTHERURL) {
+        /** 发送HTTP数据请求*/
+        WCC(weakSelf);
+        [XHAFNRequest postUrl:URL_ServiceIn postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+            
+            [weakself responseDict:responseObject];
+            
+        } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
+            
+            [weakself failWithError:responseObject];
+            
+        } iditify:nil];
         
-        [weakself responseDict:responseObject];
-        
-    } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
-        
-        [weakself failWithError:responseObject];
-        
-    } iditify:nil];
-    
-    
+    }
 }
 
 /** 成功之后返回的数据*/
 - (void)responseDict:(NSDictionary*)dict{
-    
-    NSLog(@"responseDict:%@",dict);
-    
+
+    NSString *res = [NSString stringWithFormat:@"%@",dict];
+    [XHAFNRequest alert:res];
+    NSLog(@"\n成功之后返回的数据:%@",dict);
+    NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
+    alertmsg(msg);
+
 }
 
 /** 失败返回的数据*/
 - (void)failWithError:(NSError*)error{
     
-    NSLog(@"responseDict:%@",[error localizedDescription]);
-    
+    NSLog(@"failWithError:%@",[error localizedDescription]);
 
-
-    
 }
 
     
@@ -96,4 +134,6 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)login:(id)sender {
+}
 @end

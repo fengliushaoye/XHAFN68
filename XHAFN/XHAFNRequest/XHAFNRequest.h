@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
+#import "XHURLHeader.h"
 
 /** 使用方法：
 =============POST================
+
  WCC(weakSelf);
  [XHAFNRequest postUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
      //自定义你处理数据的方法
@@ -24,6 +25,7 @@
  } iditify:nil];
  
  =============GET================
+
  WCC(weakSelf);
  [XHAFNRequest getUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
       //自定义你处理数据的方法
@@ -44,11 +46,7 @@
 //==================================================================
 */
 
-/** 防止block里循环引用*/
-#define WCC(weakSelf)    __weak typeof(self) weakself = self
 
-/** 定义一个通用的block*/
-typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
 
 @interface XHAFNRequest : NSObject
 
@@ -97,6 +95,75 @@ typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
  *  @param upImg     上传的图片
  */
 + (void)uploadWithUser:(NSString *)userId UrlString:(NSString *)urlString upImg:(UIImage *)upImg;
+
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 获取当前的时间 并格式化
+ *
+ *  @return 当前的时间
+ */
++ (NSString*)timeFormatter;
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 时间戳转时间 1381480688189 to "2016-06-11 11:51:55"
+ *
+ *  @param timestamp 时间戳
+ *
+ *  @return 转换后的时间
+ */
++ (NSString*)timestampToCustom:(NSString *)timestamp;
+
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 获取UUIDString
+ *
+ *  @return uuid
+ */
++ (NSString*)uuidStr;
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 对字符串过滤掉空格
+ *
+ *  @param str 需要过过滤的字符串
+ *
+ *  @return 过滤后的字符串
+ */
++ (NSString*)noEmptyStr:(NSString*)str;
+
+/**
+ *  @author XingHang
+ *
+ *  @brief MD5 加密
+ *
+ *  @param signString 要加密的str
+ *
+ *  @return 加密后的字符串
+ */
++(NSString *)md5Create:(NSString *)signString;
+
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 根据异常code 给予用户提示
+ *
+ *  @param str 异常code
+ *
+ *  @return 提示语句
+ */
++ (NSString*)getbackCode:(NSString*)str;
+
+
+/** 系统弹出框*/
++ (void)alert:(NSString*)msg;
 
 
 @end
