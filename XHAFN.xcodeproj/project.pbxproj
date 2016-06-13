@@ -35,6 +35,9 @@
 		226F31751D0D5BA60054211B /* xhsgcc.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31741D0D5BA60054211B /* xhsgcc.cer */; };
 		226F31771D0D61AA0054211B /* weibo.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31761D0D61AA0054211B /* weibo.cer */; };
 		226F31791D0D62E10054211B /* weiboapi.cer in Resources */ = {isa = PBXBuildFile; fileRef = 226F31781D0D62E10054211B /* weiboapi.cer */; };
+		22A64AC41D0E421D003911CB /* uscesgcccomcn.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC11D0E421D003911CB /* uscesgcccomcn.cer */; };
+		22A64AC51D0E421D003911CB /* uscesgmallcom.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC21D0E421D003911CB /* uscesgmallcom.cer */; };
+		22A64AC61D0E421D003911CB /* uscesgmalltcom.cer in Resources */ = {isa = PBXBuildFile; fileRef = 22A64AC31D0E421D003911CB /* uscesgmalltcom.cer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +95,9 @@
 		226F31741D0D5BA60054211B /* xhsgcc.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = xhsgcc.cer; sourceTree = "<group>"; };
 		226F31761D0D61AA0054211B /* weibo.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = weibo.cer; sourceTree = "<group>"; };
 		226F31781D0D62E10054211B /* weiboapi.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = weiboapi.cer; sourceTree = "<group>"; };
+		22A64AC11D0E421D003911CB /* uscesgcccomcn.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uscesgcccomcn.cer; sourceTree = "<group>"; };
+		22A64AC21D0E421D003911CB /* uscesgmallcom.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uscesgmallcom.cer; sourceTree = "<group>"; };
+		22A64AC31D0E421D003911CB /* uscesgmalltcom.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = uscesgmalltcom.cer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +158,9 @@
 		22038E1A1D07AD4D00F13404 /* XHAFNRequest */ = {
 			isa = PBXGroup;
 			children = (
+				22A64AC11D0E421D003911CB /* uscesgcccomcn.cer */,
+				22A64AC21D0E421D003911CB /* uscesgmallcom.cer */,
+				22A64AC31D0E421D003911CB /* uscesgmalltcom.cer */,
 				226F31781D0D62E10054211B /* weiboapi.cer */,
 				226F31761D0D61AA0054211B /* weibo.cer */,
 				226F31741D0D5BA60054211B /* xhsgcc.cer */,
@@ -283,13 +292,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22A64AC61D0E421D003911CB /* uscesgmalltcom.cer in Resources */,
 				22038DD81D07A2D400F13404 /* LaunchScreen.storyboard in Resources */,
 				22038DD51D07A2D400F13404 /* Assets.xcassets in Resources */,
 				226F31701D0D506F0054211B /* xh.cer in Resources */,
 				226F31721D0D519A0054211B /* mfp.cer in Resources */,
 				226F31791D0D62E10054211B /* weiboapi.cer in Resources */,
+				22A64AC41D0E421D003911CB /* uscesgcccomcn.cer in Resources */,
 				226F31771D0D61AA0054211B /* weibo.cer in Resources */,
 				226F31751D0D5BA60054211B /* xhsgcc.cer in Resources */,
+				22A64AC51D0E421D003911CB /* uscesgmallcom.cer in Resources */,
 				22038DD31D07A2D400F13404 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,6 +13,7 @@
 /** 使用方法：
 =============POST================
 
+ NSDictionary *param = @{@"key":@"value",@"key":@"value"};
  WCC(weakSelf);
  [XHAFNRequest postUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
      //自定义你处理数据的方法
@@ -25,7 +26,8 @@
  } iditify:nil];
  
  =============GET================
-
+ 
+ NSDictionary *param = @{@"key":@"value",@"key":@"value"};
  WCC(weakSelf);
  [XHAFNRequest getUrl:urlstr postDict:param successWithBlock:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
       //自定义你处理数据的方法
@@ -59,7 +61,7 @@
  *  @param parameters 发送的json数据
  *  @param success    成功的回调
  *  @param fail       失败的回调
- *  @param iditify    暂时不用，玩意未来可能会用到呢
+ *  @param iditify    暂时不用，万一未来可能会用到呢
  */
 + (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters successWithBlock:(requestBlock)success failWithBlock:(requestBlock)fail iditify:(id)iditify;
 

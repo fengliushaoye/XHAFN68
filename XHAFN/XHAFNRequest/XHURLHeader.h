@@ -9,6 +9,14 @@
 #ifndef XHURLHeader_h
 #define XHURLHeader_h
 
+/**
+ *  是否开启https SSL 验证
+ *
+ *  @return YES为开启，NO为关闭
+ */
+#define openHttpsSSL YES
+
+
 /** 统一平台的url发送请求的开关*/
 static BOOL const ISOTHERURL = YES;//yes 用同一平台 no 用socket
 
@@ -16,11 +24,22 @@ static BOOL const ISOTHERURL = YES;//yes 用同一平台 no 用socket
 /** 防止block里循环引用*/
 #define WCC(weakSelf)    __weak typeof(self) weakself = self
 
-#define alertmsg(msg)  [XHAFNRequest alert:[XHAFNRequest getbackCode:msg]]
+#define alertmsg(msg)  [XHAFNRequest alert:msg]
 
 /** 定义一个通用的block*/
 typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
 
+/**
+ *  SSL 证书名称，仅支持cer格式。“app.bishe.com.cer”,则填“app.bishe.com”
+ */
+#define certificate @"xhsgcc" //weiboapi sgcc
+/**
+ *  SSL 证书名称，仅支持cer格式。“app.bishe.com.cer”,则填“app.bishe.com”
+ 测试环境   uscesgmalltcom
+ 准生产环境 uscesgmallcom
+ 生产环境   uscesgcc.com.cn
+ */
+#define certificate_User @"uscesgmalltcom" 
 
 //所有请求的url
 /** 基础的url
@@ -72,16 +91,21 @@ static NSString * const URL_query = @"query";
 //测试请求地址 http://119.57.73.148:9000/api/com/user/query
 //https://api.weibo.com/2/comments/reply.json 微博测试接口
 
-//static NSString * const URL_ServiceIn = @"https://api.weibo.com/2/comments/reply.json";
+//static NSString * const URL_ServiceIn = @"http://119.57.73.148:9000/api/com/user/query";
 static NSString * const URL_ServiceIn = @"https://sip.esgmallt.com/sip/authz/gettoken";
 
 /** 服务接入所需参数*/
-static NSString * const RAP_userName = @"zsdl";
-static NSString * const RAP_userPwd = @"12#$abcd";
+static NSString * const RAP_userName      = @"zsdl";
+static NSString * const RAP_userPwd       = @"12#$abcd";//12#$abcd
 static NSString * const RAP_userSecretKey = @"48CBAE029A73014056B1C49D64367E94";
 
 
 
+/** 接入方编号	string	必填,统一用户中心分配给接入方接入系统的编号*/
+static NSString * const RAP_member = @"123456";
+
+/** 租户编号	string	必填,统一用户中心分配给各接入方的编号*/
+static NSString * const RAP_tenant = @"123456";
 
 
 

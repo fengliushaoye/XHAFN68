@@ -13,16 +13,6 @@
 
 /** 设置超时时间 30秒*/
 #define kTimeOutInterval 30
-/**
- *  是否开启https SSL 验证
- *
- *  @return YES为开启，NO为关闭
- */
-#define openHttpsSSL YES
-/**
- *  SSL 证书名称，仅支持cer格式。“app.bishe.com.cer”,则填“app.bishe.com”
- */
-#define certificate @"xhsgcc" //weiboapi sgcc
 
 
 @interface XHAFNRequest ()
@@ -62,26 +52,21 @@ static AFHTTPSessionManager *manager = nil;
     if (!manager) {
         
         manager = [AFHTTPSessionManager manager];
-        // 加上这行代码，https ssl 验证。
-        if(openHttpsSSL)
-        {
-            [manager setSecurityPolicy:[self customSecurityPolicy]];
-        }
-        
+
         //    上传json格式
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//        manager.requestSerializer = [AFJSONRequestSerializer serializer];
         /** 上传普通格式*/
-//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         
-        /** 获取到的是json数据*/
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        /** 获取的的普通数据*/
-//        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        /** 返回到的是json数据*/
+//        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        /** 返回的普通数据*/
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         
         
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;
         
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", @"text/plain",nil];
         
    
     }
@@ -97,23 +82,9 @@ static AFHTTPSessionManager *manager = nil;
 + (void)postUrl:(NSString*)url postDict:(NSDictionary*)parameters successWithBlock:(requestBlock)success failWithBlock:(requestBlock)fail iditify:(id)iditify{
     
     request = [self request];
-
-    NSString *requestUrl = @"";
     
-    if ([url isEqualToString:URL_ServiceIn]) {
-//服务接入
-        requestUrl = url;
-
-    }else{
-
-        requestUrl = [NSString stringWithFormat:@"%@%@",URL_BASE,url];
-
-
-    }
     
-    NSLog(@"\n请求的url：\n%@",requestUrl);
-    
-    [request postUrl:requestUrl postDict:parameters];
+    [request postUrl:url postDict:parameters];
     request.successBlock = success;
     request.failureBlock = fail;
     
@@ -126,9 +97,29 @@ static AFHTTPSessionManager *manager = nil;
     NSLog(@"入参：\n%@",parameters);
     
     AFHTTPSessionManager *manager = [self manager];
-    [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+    // 加上这行代码，https ssl 验证。
+//    if(openHttpsSSL)
+//    {
+//    }
+    NSString *requestUrl = @"";
+
+    if ([url isEqualToString:URL_ServiceIn]) {
+        //服务接入
+        requestUrl = url;
+        [manager setSecurityPolicy:[self customSecurityPolicyName:certificate]];
         
-        NSLog(@"当前进度为:%lf", 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
+    }else{
+        
+        requestUrl = [NSString stringWithFormat:@"%@%@",URL_BASE,url];
+        [manager setSecurityPolicy:[self customSecurityPolicyName:certificate_User]];
+
+    }
+    NSLog(@"\n请求的url：\n%@",requestUrl);
+
+    
+    [manager POST:requestUrl parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+//        NSLog(@"请求进度为:%lf", 1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -342,13 +333,13 @@ static AFHTTPSessionManager *manager = nil;
 //    NSLog(@"4%p",request);
 //    NSLog(@"4%p",manager);
 
-    NSLog(@"deadrequest");
+//    NSLog(@"deadrequest");
 
 }
 
 -(void)dealloc{
     
-    NSLog(@"dealloc");
+//    NSLog(@"dealloc");
     
 }
 
@@ -446,7 +437,7 @@ static AFHTTPSessionManager *manager = nil;
     //大写uppercaseString 小写lowercaseString
 }
 
-- (AFSecurityPolicy*)customSecurityPolicy
+- (AFSecurityPolicy*)customSecurityPolicyName:(NSString*)name
 {
     /*
     // /先导入证书
@@ -459,7 +450,7 @@ static AFHTTPSessionManager *manager = nil;
     securityPolicy.validatesDomainName = NO;
     securityPolicy.pinnedCertificates =  [NSSet setWithArray:@[certData]];
     */
-    NSString *cerPath = [[NSBundle mainBundle] pathForResource:certificate ofType:@"cer"];
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:name ofType:@"cer"];
     NSData * certData =[NSData dataWithContentsOfFile:cerPath];
     NSSet * certSet   = [[NSSet alloc] initWithObjects:certData, nil];
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];

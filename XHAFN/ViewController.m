@@ -28,10 +28,16 @@
     
 }
 
+#pragma mark - 发起请求
+
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
+    //服务接入
+//    [self post:_name.text pwd:_pwd.text];
     
-    [self post:_name.text pwd:_pwd.text];
+//    注册
+    [self registerRquest];
+    
 
 //    [self get];
     
@@ -72,15 +78,21 @@
     
 }
 
+
+#pragma mark - 服务接入
+
 - (void)post:(NSString*)name pwd:(NSString*)pwd{
 
+
+
     //服务接入
-    NSString *password    = pwd;
-    NSString *deviceid    = [XHAFNRequest uuidStr];
+    NSString *password    = pwd.length>0 ? pwd: RAP_userPwd;
+    password = [XHAFNRequest md5Create:password];
+    NSString *deviceid    = [XHAFNRequest uuidStr];//
     NSString *requestTime = [XHAFNRequest timeFormatter];
-    NSString *username    = name;
+    NSString *username    = name.length>0 ? name: RAP_userName;
     NSString *secretKey   = RAP_userSecretKey;
-    NSString *authSign    = [NSString stringWithFormat:@"%@%@%@%@",secretKey,username,[XHAFNRequest md5Create:password],requestTime];/** secretKey+username+password+requestTime*/
+    NSString *authSign    = [NSString stringWithFormat:@"%@%@%@%@",secretKey,username,password,requestTime];/** secretKey+username+password+requestTime*/
 
     authSign = [XHAFNRequest noEmptyStr:authSign];
 
@@ -110,21 +122,81 @@
 
 /** 成功之后返回的数据*/
 - (void)responseDict:(NSDictionary*)dict{
-
-    NSString *res = [NSString stringWithFormat:@"%@",dict];
-    [XHAFNRequest alert:res];
     NSLog(@"\n成功之后返回的数据:%@",dict);
-    NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
-    alertmsg(msg);
+    //服务接入
+    if ([dict isKindOfClass:[NSDictionary class]]) {
+        
+        NSString *res = [NSString stringWithFormat:@"%@",dict];
+        [XHAFNRequest alert:res];
+        NSString *msg = [NSString stringWithFormat:@"%@",dict[@"statusCode"]];
+        alertmsg([XHAFNRequest getbackCode:msg]);
+    }else{
+    
+            NSData *data  = (NSData*)dict;
+            NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"msg:%@",msg);
+            alertmsg(msg);
+    }
 
+    
 }
+
 
 /** 失败返回的数据*/
 - (void)failWithError:(NSError*)error{
     
     NSLog(@"failWithError:%@",[error localizedDescription]);
+    
+}
+
+
+#pragma mark - 登录名校验
+
+- (void)registerRquest{
+    
+    NSDictionary *param= @{
+                           @"account":@"123456",
+                           @"uscInfo":@{@"member":RAP_member,@"tenant":RAP_tenant},
+                           };
+    
+    /** 发送HTTP数据请求*/
+    WCC(weakSelf);
+    [XHAFNRequest postUrl:URL_checkloginname postDict:param successWithBlock:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        [weakself registerResponseDict:responseObject];
+        
+    } failWithBlock:^(NSURLSessionDataTask *task, NSError *responseObject) {
+        
+        [weakself registerFailWithError:responseObject];
+        
+    } iditify:nil];
+    
+    
+}
+
+/** 成功之后返回的数据*/
+- (void)registerResponseDict:(id)dict{
+    
+    NSLog(@"responseDict:%@",dict);
+    NSData *data  = (NSData*)dict;
+    NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"msg:%@",msg);
+
+    alertmsg(msg);
+    
+    
+}
+
+/** 失败返回的数据*/
+- (void)registerFailWithError:(NSError*)error{
+    
+    NSLog(@"responseDict:%@",[error localizedDescription]);
+    
 
 }
+
+
+#pragma mark - 其他
 
     
 
