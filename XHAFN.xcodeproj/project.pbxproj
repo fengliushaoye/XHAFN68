@@ -475,7 +475,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
-				GCC_PREFIX_HEADER = "/Users/XingHang/Desktop/综合练习/Object-c语言/XHAFN/XHAFN/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/XHAFN/PrefixHeader.pch";
 				INFOPLIST_FILE = XHAFN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -489,7 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
-				GCC_PREFIX_HEADER = "/Users/XingHang/Desktop/综合练习/Object-c语言/XHAFN/XHAFN/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/XHAFN/PrefixHeader.pch";
 				INFOPLIST_FILE = XHAFN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
