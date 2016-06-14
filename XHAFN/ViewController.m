@@ -133,6 +133,9 @@
         msg = [XHAFNRequest getbackCode:msg];
         
         alertmsg(msg);
+    }else{
+        NSString *token = dict[@"token"];
+        save_Token(token);
     }
   
     
@@ -152,8 +155,14 @@
 
 - (void)registerRquest{
     
+    NSString *token = get_Token;
+    if (token.length ==0) {
+        alertmsg(@"请先登录");
+        return;
+    }
     NSDictionary *param= @{
                            @"account":@"123456",
+                           @"token":token,
                            @"uscInfo":@{@"member":RAP_member,@"tenant":RAP_tenant},
                            };
     

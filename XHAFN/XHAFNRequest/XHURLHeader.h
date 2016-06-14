@@ -9,6 +9,13 @@
 #ifndef XHURLHeader_h
 #define XHURLHeader_h
 
+
+/** 保存token*/
+#define save_Token(token) [XHAFNRequest saveToken:token]
+/** 获取token*/
+#define get_Token  [XHAFNRequest getToken]
+
+
 /**
  *  是否开启https SSL 验证
  *
@@ -37,9 +44,9 @@ typedef void(^requestBlock)(NSURLSessionDataTask *  task,id  responseObject);
  *  SSL 证书名称，仅支持cer格式。“app.bishe.com.cer”,则填“app.bishe.com”
  测试环境   uscesgmalltcom
  准生产环境 uscesgmallcom
- 生产环境   uscesgcc.com.cn
+ 生产环境   uscesgcccomcn
  */
-#define certificate_User @"uscesgmalltcom" 
+#define certificate_User @"uscesgmalltcom"
 
 //所有请求的url
 /** 基础的url
@@ -102,10 +109,15 @@ static NSString * const RAP_userSecretKey = @"48CBAE029A73014056B1C49D64367E94";
 
 
 /** 接入方编号	string	必填,统一用户中心分配给接入方接入系统的编号*/
-static NSString * const RAP_member = @"123456";
+static NSString * const RAP_member = @"state_grid";
 
 /** 租户编号	string	必填,统一用户中心分配给各接入方的编号*/
-static NSString * const RAP_tenant = @"123456";
+static NSString * const RAP_tenant = @"powerapp";
+
+
+
+/** token key*/
+static NSString * const RAP_token = @"rap_token";
 
 
 

@@ -132,7 +132,7 @@
 /**
  *  @author XingHang
  *
- *  @brief 对字符串过滤掉空格
+ *  @brief 对字符串过滤掉空格 并进行MD5加密
  *
  *  @param str 需要过过滤的字符串
  *
@@ -180,6 +180,24 @@
 /** 视图销毁的时候调用下哦*/
 +(void)deadrequest;
 
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 保存token到本地
+ *
+ *  @param token 
+ */
++ (void)saveToken:(NSString*)token;
+
+/**
+ *  @author XingHang
+ *
+ *  @brief 获取本地保存的token
+ *
+ *  @return token
+ */
++ (NSString*)getToken;
 
 
 @end

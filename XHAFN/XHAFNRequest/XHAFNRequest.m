@@ -87,7 +87,7 @@ static UIView *alplaView = nil;
         
         CGSize viewsize = [UIScreen mainScreen].bounds.size;
         alplaView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, viewsize.width, viewsize.height-64)];
-        alplaView.backgroundColor = [UIColor grayColor];
+        alplaView.backgroundColor = [UIColor clearColor];
         [[UIApplication sharedApplication].keyWindow addSubview:alplaView];
     }
     return alplaView;
@@ -150,7 +150,8 @@ static UIView *alplaView = nil;
 
             NSString *msg = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             alertmsg(msg);
-            
+            NSLog(@"\n 请求返回的数据:%@",msg);
+
         }else{
             
             if (self.successBlock) {
@@ -550,6 +551,7 @@ static UIView *alplaView = nil;
             msg = error.localizedDescription;
             break;
     }
+    NSLog(@"请求失败：%@",msg);
     return msg;
 }
 
@@ -597,5 +599,77 @@ static UIView *alplaView = nil;
     
 }
 
+
+
+#pragma mark - 校验登录名 code
+
++ (BOOL)checkloginnameWithResultCode:(NSString*)resultCode{
+    
+    /**   resultCode
+     返回代码	string
+     0000->正常;
+     0001->用户名不符合规则;
+     0002->手机号不符合规则;
+     0003->邮箱不符合规则;
+     0100->用户名已存在;
+     0101-手机号已存在;
+     0102->邮箱已存在;*/
+    if ([resultCode isEqualToString:@"0000"]) {
+        
+        return YES;
+        
+    }else{
+
+        NSString *msg = @"";
+        if ([resultCode isEqualToString:@"0001"]){
+            
+            msg = @"用户名不符合规则";
+            return NO;
+            
+        }else if ([resultCode isEqualToString:@"0002"]){
+            msg = @"手机号不符合规则";
+            return NO;
+            
+        }else if ([resultCode isEqualToString:@"0003"]){
+            msg = @"邮箱不符合规则";
+
+            return NO;
+            
+        }else if ([resultCode isEqualToString:@"0100"]){
+            msg = @"用户名已存在";
+
+            return NO;
+            
+        }else if ([resultCode isEqualToString:@"0101"]){
+            msg = @"手机号已存在";
+
+            return NO;
+            
+        }else if ([resultCode isEqualToString:@"0102"]){
+
+            msg = @"邮箱已存在";
+            return NO;
+            
+        }
+        return NO;
+    }
+    
+
+}
+
+
+
+#pragma mark - 存。取。token到本地
+
++ (void)saveToken:(NSString*)token{
+    
+    [[NSUserDefaults standardUserDefaults] setValue:token forKey:RAP_token];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSString*)getToken{
+    
+    return [[NSUserDefaults standardUserDefaults] objectForKey:RAP_token];
+}
 
 @end
